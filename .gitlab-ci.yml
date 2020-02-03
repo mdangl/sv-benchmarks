@@ -69,8 +69,20 @@ master-compile-gcc:5-juliet:
   <<: *master-compile-check-juliet
   <<: *gcc-5
 
-preprocessing-consistency:
+branch-preprocessing-consistency:
   stage: checks
+  except: 
+    refs:
+      - master
+  image: registry.gitlab.com/sosy-lab/software/sv-benchmarks/ci/preprocessing-consistency:latest
+  script:
+    - "./scripts/diff_preprocessing.sh"
+
+master-preprocessing-consistency:
+  stage: checks
+  only: 
+    refs:
+      - master
   image: registry.gitlab.com/sosy-lab/software/sv-benchmarks/ci/preprocessing-consistency:latest
   script:
     - "goto-diff --version"
